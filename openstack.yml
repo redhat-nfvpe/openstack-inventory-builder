@@ -18,6 +18,13 @@
       pip:
         name: shade
 
+    - name: Debug who I am
+      shell: >
+        whoami
+      register: whoami
+
+    - debug: var=whoami
+
     - name: Deploy an instance
       os_server:
         name: "{{ cloud_name_prefix }}-{{ item.name }}"
