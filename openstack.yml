@@ -1,8 +1,6 @@
 # vim: set ft=ansible
 - name: Deploy on OpenStack
-  hosts: localhost
-  tags:
-    - always
+  hosts: all
 
   gather_facts: false
 

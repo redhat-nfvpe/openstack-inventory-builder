@@ -1,5 +1,0 @@
-instance_list:
-  - { name: kube-master, group: master, security_groups: "default" }
-  - { name: kube-node-1, group: nodes, security_groups: "default" }
-  - { name: kube-node-2, group: nodes, security_groups: "default" }
-  - { name: kube-node-3, group: nodes, security_groups: "default" }
