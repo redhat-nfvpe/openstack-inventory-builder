@@ -18,13 +18,6 @@
       pip:
         name: shade
 
-    - name: Debug who I am
-      shell: >
-        whoami
-      register: whoami
-
-    - debug: var=whoami
-
     - name: Deploy an instance
       os_server:
         name: "{{ cloud_name_prefix }}-{{ item.name }}"
@@ -48,10 +41,6 @@
       register: instances
       with_items: "{{ instance_list }}"
 
-    - debug:
-        var: instances
-        verbosity: 1
-
     - name: Validate the host is available
       command: >
         ssh -o BatchMode=yes -o StrictHostKeyChecking=no
@@ -62,6 +51,7 @@
       delay: 5
       with_items: "{{ instances.results }}"
       changed_when: false
+      no_log: True
 
     - name: Add host to inventory
       add_host:
@@ -71,3 +61,4 @@
         ansible_user: centos
         ansible_become: true
       with_items: "{{ instances.results }}"
+      no_log: True
