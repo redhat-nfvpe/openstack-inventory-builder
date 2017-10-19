@@ -5,6 +5,19 @@
   gather_facts: false
 
   tasks:
+    - name: Install deps
+      package:
+        name: "{{ item }}"
+      with_items:
+        - python-devel
+        - python-pip
+      become: true
+      become_user: root
+
+    - name: Install shade
+      pip:
+        name: shade
+
     - name: Deploy an instance
       os_server:
         name: "{{ cloud_name_prefix }}-{{ item.name }}"
