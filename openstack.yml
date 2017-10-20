@@ -41,12 +41,6 @@
       register: instances
       with_items: "{{ instance_list }}"
 
-    - debug: var=item.server.public_v4
-      with_items: "{{ instances.results }}"
-
-    - name: Validate the host is available
-      wait_for_connection:
-
     - name: Add host to inventory
       add_host:
         name: "{{ item.item.name }}"
