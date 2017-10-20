@@ -41,17 +41,20 @@
       register: instances
       with_items: "{{ instance_list }}"
 
+    - debug: var=item.server.public_v4
+      with_items: "{{ instances.results }}"
+
     - name: Validate the host is available
       command: >
-        ssh -i ~/.ssh/id_rda -o BatchMode=yes -o StrictHostKeyChecking=no
+        ssh -o BatchMode=yes -o StrictHostKeyChecking=no
         centos@{{ item.server.public_v4 }}
       register: result
       until: result|success
-      retries: 300
+      retries: 10
       delay: 5
       with_items: "{{ instances.results }}"
       changed_when: false
-      no_log: True
+      #no_log: True
 
     - name: Add host to inventory
       add_host:
