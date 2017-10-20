@@ -39,14 +39,10 @@
         auto_ip: yes
         timeout: 200
         meta:
-          group:
-            - "{{ item.group }}"
-            - all_vms
+          group: "{{ item.group }}"
           hostname: "{{ item.name }}"
       register: instances
       with_items: "{{ instance_list }}"
-
-    - debug: var=instances.results
 
     - name: Add host to inventory
       add_host:
