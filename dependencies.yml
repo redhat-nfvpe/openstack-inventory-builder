@@ -1,0 +1,18 @@
+- name: Setup dependencies for deploying to OpenStack
+  hosts: all
+
+  gather_facts: false
+
+  tasks:
+    - name: Install deps
+      package:
+        name: "{{ item }}"
+      with_items:
+        - python-devel
+        - python-pip
+      become: true
+      become_user: root
+
+    - name: Install shade
+      pip:
+        name: shade

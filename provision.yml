@@ -1,24 +1,10 @@
 # vim: set ft=ansible
-- name: Deploy on OpenStack
+- name: Provision Instances
   hosts: all
-
   gather_facts: false
 
   tasks:
-    - name: Install deps
-      package:
-        name: "{{ item }}"
-      with_items:
-        - python-devel
-        - python-pip
-      become: true
-      become_user: root
-
-    - name: Install shade
-      pip:
-        name: shade
-
-    - name: Deploy an instance
+    - name: Deploy from instance_list
       os_server:
         name: "{{ cloud_name_prefix }}-{{ item.name }}"
         state: present
@@ -41,15 +27,4 @@
         meta:
           group: "{{ item.group }}"
           hostname: "{{ item.name }}"
-      register: instances
       with_items: "{{ instance_list }}"
-
-    - name: Add host to inventory
-      add_host:
-        name: "{{ item.item.name }}"
-        groups: "{{ item.item.group }}"
-        ansible_host: "{{ item.server.public_v4 }}"
-        ansible_user: centos
-        ansible_become: true
-      with_items: "{{ instances.results }}"
-      no_log: True

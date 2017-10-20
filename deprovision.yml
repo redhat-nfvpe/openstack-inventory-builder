@@ -1,0 +1,20 @@
+# vim: set ft=ansible
+- name: Deprovision Instances
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Teardown from instance_list
+      os_server:
+        name: "{{ cloud_name_prefix }}-{{ item.name }}"
+        state: absent
+        auth:
+          auth_url: "{{ my_auth_url }}"
+          username: "{{ my_username }}"
+          password: "{{ my_password }}"
+          project_name: "{{ my_project_name }}"
+        region_name: "{{ cloud_region_name }}"
+        availability_zone: "{{ cloud_availability_zone }}"
+        key_name: "{{ cloud_key_name }}"
+        timeout: 200
+      with_items: "{{ instance_list }}"
