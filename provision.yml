@@ -1,30 +1,9 @@
-# vim: set ft=ansible
+# vim: set ft=ansible tabstop=2 shiftwdith=2 expandtab
 - name: Provision Instances
   hosts: all
   gather_facts: false
 
   tasks:
-    - name: Deploy from instance_list
-      os_server:
-        name: "{{ cloud_name_prefix }}-{{ item.name }}"
-        state: present
-        auth:
-          auth_url: "{{ my_auth_url }}"
-          username: "{{ my_username }}"
-          password: "{{ my_password }}"
-          project_name: "{{ my_project_name }}"
-        region_name: "{{ cloud_region_name }}"
-        availability_zone: "{{ cloud_availability_zone }}"
-        image: "{{ cloud_image }}"
-        flavor: "{{ cloud_flavor }}"
-        key_name: "{{ cloud_key_name }}"
-        boot_from_volume: true
-        terminate_volume: true
-        volume_size: 20
-        security_groups: "{{ item.security_groups }}"
-        auto_ip: yes
-        timeout: 200
-        meta:
-          group: "{{ item.group }}"
-          hostname: "{{ item.name }}"
+    - name: Provision virtual machines
+      include_tasks: tasks/provision.yml
       with_items: "{{ instance_list }}"
