@@ -1,4 +1,3 @@
-# vim: set ft=ansible tabstop=2 shiftwdith=2 expandtab
 - os_server:
   name: "{{ cloud_name_prefix }}-{{ item.name }}"
   state: present
