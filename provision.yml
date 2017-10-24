@@ -4,6 +4,5 @@
   gather_facts: false
 
   tasks:
-    - name: Provision virtual machines
-      include_tasks: tasks/provision.yml
+    - include_tasks: tasks/provision.yml
       with_items: "{{ instance_list }}"
