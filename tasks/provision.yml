@@ -1,5 +1,17 @@
 # vim: ft=ansible tabstop=2 shiftwidth=2 expandtab
 ---
+- os_volume:
+    state: present
+    auth:
+      auth_url: "{{ my_auth_url }}"
+      username: "{{ my_username }}"
+      password: "{{ my_password }}"
+      project_name: "{{ my_project_name }}"
+    region_name: "{{ cloud_region_name }}"
+    availability_zone: "{{ cloud_availability_zone }}"
+    display_name: "{{ cloud_name_prefix }}-{{ item.name }}"
+    size: 20
+
 - os_server:
     name: "{{ cloud_name_prefix }}-{{ item.name }}"
     state: present
@@ -21,4 +33,6 @@
     timeout: 200
     meta:
       group: "{{ item.group }}"
-      1hostname: "{{ item.name }}"
+      hostname: "{{ item.name }}"
+    volumes:
+      - "{{ cloud_name_prefix }}-{{ item.name }}"

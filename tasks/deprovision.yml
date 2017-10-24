@@ -12,3 +12,15 @@
     availability_zone: "{{ cloud_availability_zone }}"
     key_name: "{{ cloud_key_name }}"
     timeout: 200
+
+- name: Delete second volume
+  os_volume:
+    state: absent
+    name: "{{ cloud_name_prefix }}-{{ item.name }}"
+    auth:
+      auth_url: "{{ my_auth_url }}"
+      username: "{{ my_username }}"
+      password: "{{ my_password }}"
+      project_name: "{{ my_project_name }}"
+    region_name: "{{ cloud_region_name }}"
+    availability_zone: "{{ cloud_availability_zone }}"
