@@ -1,7 +1,7 @@
 # vim: set ft=ansible tabstop=2 shiftwidth=2 expandtab
 - name: Teardown from instance_list
   os_server:
-    name: "{{ cloud_name_prefix }}-{{ item.name }}"
+    name: "{{ cloud_name_prefix }}-{{ instance_item.name }}"
     state: absent
     auth:
       auth_url: "{{ my_auth_url }}"
@@ -13,10 +13,10 @@
     key_name: "{{ cloud_key_name }}"
     timeout: 200
 
-- name: Delete second volume
+- name: Delete extra volume
   os_volume:
     state: absent
-    name: "{{ cloud_name_prefix }}-{{ item.name }}"
+    name: "{{ cloud_name_prefix }}-{{ instance_item.name }}-{{ item }}"
     auth:
       auth_url: "{{ my_auth_url }}"
       username: "{{ my_username }}"
@@ -24,3 +24,6 @@
       project_name: "{{ my_project_name }}"
     region_name: "{{ cloud_region_name }}"
     availability_zone: "{{ cloud_availability_zone }}"
+  when: instance_item.extra_vols is defined | default(omit)
+  with_items:
+    - "{{ instance_item.extra_vols | default(None) }}"

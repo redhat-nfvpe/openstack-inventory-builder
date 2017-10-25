@@ -9,11 +9,14 @@
       project_name: "{{ my_project_name }}"
     region_name: "{{ cloud_region_name }}"
     availability_zone: "{{ cloud_availability_zone }}"
-    display_name: "{{ cloud_name_prefix }}-{{ item.name }}"
+    display_name: "{{ cloud_name_prefix }}-{{ instance_item.name }}-{{ item }}"
     size: 20
+  when: instance_item.extra_vols is defined | default(omit)
+  with_items:
+    - "{{ instance_item.extra_vols | default(None) }}"
 
 - os_server:
-    name: "{{ cloud_name_prefix }}-{{ item.name }}"
+    name: "{{ cloud_name_prefix }}-{{ instance_item.name }}"
     state: present
     auth:
       auth_url: "{{ my_auth_url }}"
@@ -28,11 +31,24 @@
     boot_from_volume: true
     terminate_volume: true
     volume_size: 20
-    security_groups: "{{ item.security_groups }}"
+    security_groups: "{{ instance_item.security_groups }}"
     auto_ip: yes
     timeout: 200
     meta:
-      group: "{{ item.group }}"
-      hostname: "{{ item.name }}"
-    volumes:
-      - "{{ cloud_name_prefix }}-{{ item.name }}"
+      group: "{{ instance_item.group }}"
+      hostname: "{{ instance_item.name }}"
+
+- os_server_volume:
+    state: present
+    server: "{{ cloud_name_prefix }}-{{ instance_item.name }}"
+    volume: "{{ cloud_name_prefix }}-{{ instance_item.name }}-{{ item }}"
+    auth:
+      auth_url: "{{ my_auth_url }}"
+      username: "{{ my_username }}"
+      password: "{{ my_password }}"
+      project_name: "{{ my_project_name }}"
+    region_name: "{{ cloud_region_name }}"
+    availability_zone: "{{ cloud_availability_zone }}"
+  when: instance_item.extra_vols is defined | default(omit)
+  with_items:
+    - "{{ instance_item.extra_vols | default(None) }}"
