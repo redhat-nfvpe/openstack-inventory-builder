@@ -1,4 +1,5 @@
 # vim: set ft=ansible tabstop=2 shiftwdith=2 expandtab
+---
 - name: Provision Instances
   hosts: all
   gather_facts: false

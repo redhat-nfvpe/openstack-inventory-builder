@@ -1,3 +1,4 @@
+---
 - name: Setup dependencies for deploying to OpenStack
   hosts: all
 

@@ -1,4 +1,5 @@
 # vim: set ft=ansible tabstop=2 shiftwidth=2 expandtab
+---
 - name: Deprovision Instances
   hosts: all
   gather_facts: false
